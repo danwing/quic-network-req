@@ -41,7 +41,7 @@
     <abstract>
       <t>As QUIC is deployed in more networks, some existing network path
         infrastructure will need to be updated.  This document describes a
-        few ways QUIC might be modifified to make these updates possible
+        few ways QUIC might be modified to make these updates possible
         and palatable to the developers and operators that will need to make
         the changes.</t>
     </abstract>
@@ -60,7 +60,7 @@ identifying QUIC traffic and prevents the path from treating
 QUIC as a transport protocol on par with TCP.</t>
 
 <t>Although it might be possible for path elements to heuristically
-perform their traditional roles, explictly making the path a part
+perform their traditional roles, explicitly making the path a part
 of the QUIC architecture will generate a superior user experience.  Note that
 the information required to be exposed is *less* than TCP exposes, in order to
 enable future QUIC extensibility.</t>
@@ -77,7 +77,7 @@ generating high volumes of UDP traffic towards a victim
 protocols are request/response and could have higher rate limits
 because consent to receive is visible to the path (e.g., DNS, NTP) but others
 are send-only (e.g., SNMP traps, SYSLOG).  The configuration expense and fear
-of ossification involved in deeper packet inspection is not commesurate
+of ossification involved in deeper packet inspection is not commensurate
 with the benefit of higher rate limits for those request/response
 protocols, so many networks simply rate limit or block UDP.</t>
 
@@ -103,6 +103,24 @@ acknowledgement for a given 5-tuple.</t>
 </list></t>
 </section>
 
+<section title="Association with Existing Consent">
+<t>Once a consent to receive is established, multiple packets will usually
+be received in response to a single request.  In TCP, both the 5-tuple and
+the sequence numbers on a given packet are used to provide hints to the path
+about this association, in an attempt make the job of off-path attackers more
+difficult.  If QUIC does not allow the path to associate packets with a
+consent at greater assurance than just matching the 5-tuple (relying on the
+endpoint software to filter all attacks) a good amount of training will be
+required for firewall administrators.  This training will have to change
+the long-standing world view of a group that has traditionally been resistant
+to change, delaying the deployment of QUIC.</t>
+<t><list style="hanging">
+<t>Recommendation: QUIC should allow path elements to associate packets
+after the consent to recieve with that consent, with more assurance than the
+5-tuple.</t>
+</list></t>
+</section>
+
 <section title="Long-lived Connections and HTTP Server Push">
 <t>Although the recommended UDP timeout for arbitrary ports is two
 minutes (Section 4.3 of <xref target="RFC4787"></xref>), some
@@ -123,7 +141,7 @@ mitigated by (a) the client identifying its long-lived connections to
 the path (e.g., using PCP or UPnP IGD) or (b) by using an
 easily-identified QUIC header so the pat can hopefully identify
 that header and apply a longer, TCP-like mapping.  Neither is a
-perfect solution.  Note that heuristic NAT / firewall beahavior
+perfect solution.  Note that heuristic NAT / firewall behavior
 discovery is tempting, but imperfect <xref target="RFC5780"></xref>,
 leaving QUIC with sending occasional keepalives as the best
 assurance against mapping destruction (Section 8.10 of
@@ -132,7 +150,7 @@ assurance against mapping destruction (Section 8.10 of
 <t>Experience with TCP is that state needs to be retained
 after processing the initial session shutdown packet, to avoid
 half-closed sessions on the TCP endpoints.  Although QUIC's termination
-mechanism is simplier than TCP's, it is desirable to avoid causing
+mechanism is simpler than TCP's, it is desirable to avoid causing
 half-closed sessions with QUIC.</t>
 
 <t><list style="hanging">
@@ -143,7 +161,7 @@ timing recommendations for path state expiry.</t>
 
 <section title="Identification">
 <t>The externally-visible QUIC version number is useful for future
-protocol agilty.  However, as this is visible to the path, it is
+protocol agility.  However, as this is visible to the path, it is
 likely to ossify around that value.  Thus, having something else to
 identify QUIC is useful, so that the version number can change while
 retaining the same identification of a QUIC packet.</t>
@@ -189,7 +207,7 @@ if receiving unsolicited QUIC packets causes problems for commonly-
 deployed UDP applications.</t>
 
 <t><list style="hanging">
-<t>Recommendation: Evalaute if receiving unsolicited QUIC packets
+<t>Recommendation: Evaluate if receiving unsolicited QUIC packets
 causes new problems for existing UDP clients or UDP servers.</t>
 </list></t>
 
