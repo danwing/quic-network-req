@@ -5,7 +5,7 @@
 QUIC                                                             D. Wing
 Internet-Draft                                             J. Hildebrand
 Intended status: Standards Track                                   Cisco
-Expires: December 15, 2016                                 June 13, 2016
+Expires: December 16, 2016                                 June 14, 2016
 
 
                    Network Path Requirements for QUIC
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 15, 2016.
+   This Internet-Draft will expire on December 16, 2016.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Wing & Hildebrand       Expires December 15, 2016               [Page 1]
+Wing & Hildebrand       Expires December 16, 2016               [Page 1]
 
 Internet-Draft     Network Path Requirements for QUIC          June 2016
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Wing & Hildebrand       Expires December 15, 2016               [Page 2]
+Wing & Hildebrand       Expires December 16, 2016               [Page 2]
 
 Internet-Draft     Network Path Requirements for QUIC          June 2016
 
@@ -165,7 +165,7 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
 
 
 
-Wing & Hildebrand       Expires December 15, 2016               [Page 3]
+Wing & Hildebrand       Expires December 16, 2016               [Page 3]
 
 Internet-Draft     Network Path Requirements for QUIC          June 2016
 
@@ -221,7 +221,7 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
 
 
 
-Wing & Hildebrand       Expires December 15, 2016               [Page 4]
+Wing & Hildebrand       Expires December 16, 2016               [Page 4]
 
 Internet-Draft     Network Path Requirements for QUIC          June 2016
 
@@ -238,7 +238,8 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
    unreachable, port unreachable), or due to policy reasons may not
    react at all.  Most operating systems allow non-privileged
    applications to receive and parse ICMP errors, allowing the QUIC
-   stack to validate the returned ICMP error [ICMPTest].
+   stack to (partially) validate the returned ICMP error [ICMPTest],
+   depending on the length of the returned ICMP message.
 
       Recommendation: QUIC applications should honor an ICMP hard error
       matching the 5-tuple of the remote peer and its recently-sent
@@ -276,8 +277,7 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
 
 
 
-
-Wing & Hildebrand       Expires December 15, 2016               [Page 5]
+Wing & Hildebrand       Expires December 16, 2016               [Page 5]
 
 Internet-Draft     Network Path Requirements for QUIC          June 2016
 
@@ -296,8 +296,8 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
               draft-tsvwg-quic-protocol-02 (work in progress), January
               2016.
 
-   [RFC5927]  Gont, F., "ICMP Attacks against TCP", RFC 5927,
-              DOI 10.17487/RFC5927, July 2010,
+   [RFC5927]  Gont, F., "ICMP Attacks against TCP", RFC 5927, DOI
+              10.17487/RFC5927, July 2010,
               <http://www.rfc-editor.org/info/rfc5927>.
 
 9.2.  Informative References
@@ -333,14 +333,14 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
 
 
 
-Wing & Hildebrand       Expires December 15, 2016               [Page 6]
+Wing & Hildebrand       Expires December 16, 2016               [Page 6]
 
 Internet-Draft     Network Path Requirements for QUIC          June 2016
 
 
    [RFC5780]  MacDonald, D. and B. Lowekamp, "NAT Behavior Discovery
-              Using Session Traversal Utilities for NAT (STUN)",
-              RFC 5780, DOI 10.17487/RFC5780, May 2010,
+              Using Session Traversal Utilities for NAT (STUN)", RFC
+              5780, DOI 10.17487/RFC5780, May 2010,
               <http://www.rfc-editor.org/info/rfc5780>.
 
    [RFC6824]  Ford, A., Raiciu, C., Handley, M., and O. Bonaventure,
@@ -389,4 +389,4 @@ Authors' Addresses
 
 
 
-Wing & Hildebrand       Expires December 15, 2016               [Page 7]
+Wing & Hildebrand       Expires December 16, 2016               [Page 7]

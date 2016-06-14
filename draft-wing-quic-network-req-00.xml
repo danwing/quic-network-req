@@ -195,10 +195,11 @@ causes new problems for existing UDP clients or UDP servers.</t>
 
 <t>No application listening: If there is no process listening on that
 UDP port, the host will generate an ICMP or ICMP6 error (destination
-unreachable, port unreachable), or due to policy reasons may not react at all.
-Most operating systems allow non-privileged applications to receive and parse
-ICMP errors, allowing the QUIC stack to validate the returned ICMP
-error <xref target="ICMPTest"></xref>.</t>
+unreachable, port unreachable), or due to policy reasons may not react
+at all.  Most operating systems allow non-privileged applications to
+receive and parse ICMP errors, allowing the QUIC stack to (partially)
+validate the returned ICMP error <xref target="ICMPTest"></xref>,
+depending on the length of the returned ICMP message.</t>
 
 <t><list style="hanging">
 <t>Recommendation: QUIC applications should honor an ICMP hard error
