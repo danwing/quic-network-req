@@ -148,7 +148,7 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
    of service.
 
       Recommendation: QUIC should allow path elements to associate every
-      packet after the consent to recieve with that consent, with more
+      packet after the consent to receive with that consent, with more
       assurance than the 5-tuple.
 
 4.  Long-lived Connections and HTTP Server Push
@@ -315,8 +315,8 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
               draft-tsvwg-quic-protocol-02 (work in progress), January
               2016.
 
-   [RFC5927]  Gont, F., "ICMP Attacks against TCP", RFC 5927,
-              DOI 10.17487/RFC5927, July 2010,
+   [RFC5927]  Gont, F., "ICMP Attacks against TCP", RFC 5927, DOI
+              10.17487/RFC5927, July 2010,
               <http://www.rfc-editor.org/info/rfc5927>.
 
 10.2.  Informative References
@@ -358,8 +358,8 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
               2007, <http://www.rfc-editor.org/info/rfc4787>.
 
    [RFC5780]  MacDonald, D. and B. Lowekamp, "NAT Behavior Discovery
-              Using Session Traversal Utilities for NAT (STUN)",
-              RFC 5780, DOI 10.17487/RFC5780, May 2010,
+              Using Session Traversal Utilities for NAT (STUN)", RFC
+              5780, DOI 10.17487/RFC5780, May 2010,
               <http://www.rfc-editor.org/info/rfc5780>.
 
    [RFC6824]  Ford, A., Raiciu, C., Handley, M., and O. Bonaventure,

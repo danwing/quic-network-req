@@ -114,7 +114,7 @@ endpoint software to filter all attacks) the network cannot filter attacks
 such as denials of service.</t>
 <t><list style="hanging">
 <t>Recommendation: QUIC should allow path elements to associate every packet
-after the consent to recieve with that consent, with more assurance than the
+after the consent to receive with that consent, with more assurance than the
 5-tuple.</t>
 </list></t>
 </section>
