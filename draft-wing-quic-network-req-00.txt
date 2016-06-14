@@ -15,7 +15,7 @@ Abstract
 
    As QUIC is deployed in more networks, some existing network path
    infrastructure will need to be updated.  This document describes a
-   few ways QUIC might be modifified to make these updates possible and
+   few ways QUIC might be modified to make these updates possible and
    palatable to the developers and operators that will need to make the
    changes.
 
@@ -62,15 +62,16 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Consent to Receive and Rate Limiting  . . . . . . . . . . . .   2
-   3.  Long-lived Connections and HTTP Server Push . . . . . . . . .   3
-   4.  Identification  . . . . . . . . . . . . . . . . . . . . . . .   4
-   5.  Spurious Packets  . . . . . . . . . . . . . . . . . . . . . .   4
-   6.  Path State Loss . . . . . . . . . . . . . . . . . . . . . . .   5
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .   6
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .   6
+   3.  Association with Existing Consent . . . . . . . . . . . . . .   3
+   4.  Long-lived Connections and HTTP Server Push . . . . . . . . .   3
+   5.  Identification  . . . . . . . . . . . . . . . . . . . . . . .   4
+   6.  Spurious Packets  . . . . . . . . . . . . . . . . . . . . . .   4
+   7.  Path State Loss . . . . . . . . . . . . . . . . . . . . . . .   5
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .   6
+     10.2.  Informative References . . . . . . . . . . . . . . . . .   6
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
 
 1.  Introduction
@@ -86,7 +87,7 @@ Table of Contents
    protocol on par with TCP.
 
    Although it might be possible for path elements to heuristically
-   perform their traditional roles, explictly making the path a part of
+   perform their traditional roles, explicitly making the path a part of
    the QUIC architecture will generate a superior user experience.  Note
    that the information required to be exposed is *less* than TCP
    exposes, in order to enable future QUIC extensibility.
@@ -103,9 +104,8 @@ Table of Contents
    response and could have higher rate limits because consent to receive
    is visible to the path (e.g., DNS, NTP) but others are send-only
    (e.g., SNMP traps, SYSLOG).  The configuration expense and fear of
-   ossification involved in deeper packet inspection is not commesurate
-   with the benefit of higher rate limits for those request/response
-   protocols, so many networks simply rate limit or block UDP.
+   ossification involved in deeper packet inspection is not commensurate
+
 
 
 
@@ -113,6 +113,9 @@ Wing & Hildebrand       Expires December 16, 2016               [Page 2]
 
 Internet-Draft     Network Path Requirements for QUIC          June 2016
 
+
+   with the benefit of higher rate limits for those request/response
+   protocols, so many networks simply rate limit or block UDP.
 
    Unlike UDP, TCP has a clear consent-to-receive indicator, which is
    why TCP is not subjected to rate-limits on those same networks.  For
@@ -132,7 +135,25 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
       Recommendation: Provide path-visible consent request and consent
       acknowledgement for a given 5-tuple.
 
-3.  Long-lived Connections and HTTP Server Push
+3.  Association with Existing Consent
+
+   Once a consent to receive is established, multiple packets will
+   usually be received in response to a single request.  In TCP, both
+   the 5-tuple and the sequence numbers on a given packet are used to
+   provide hints to the path about this association, in an attempt make
+   the job of off-path attackers more difficult.  If QUIC does not allow
+   the path to associate packets with a consent at greater assurance
+   than just matching the 5-tuple (relying on the endpoint software to
+   filter all attacks) a good amount of training will be required for
+   firewall administrators.  This training will have to change the long-
+   standing world view of a group that has traditionally been resistant
+   to change, delaying the deployment of QUIC.
+
+      Recommendation: QUIC should allow path elements to associate
+      packets after the consent to recieve with that consent, with more
+      assurance than the 5-tuple.
+
+4.  Long-lived Connections and HTTP Server Push
 
    Although the recommended UDP timeout for arbitrary ports is two
    minutes (Section 4.3 of [RFC4787]), some residential CPE devices have
@@ -140,6 +161,14 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
    ([homeCPE], [tsvarea]).  Longer timeouts are provided to connection-
    oriented TCP -- 4 minutes during connection establishment and 2 hours
    after connection establishment [homeCPE].
+
+
+
+
+Wing & Hildebrand       Expires December 16, 2016               [Page 3]
+
+Internet-Draft     Network Path Requirements for QUIC          June 2016
+
 
    Such short timers are not a problem if the mapping is destroyed and
    the client sends data first, as a new mapping will be created and
@@ -151,7 +180,7 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
    connections to the path (e.g., using PCP or UPnP IGD) or (b) by using
    an easily-identified QUIC header so the pat can hopefully identify
    that header and apply a longer, TCP-like mapping.  Neither is a
-   perfect solution.  Note that heuristic NAT / firewall beahavior
+   perfect solution.  Note that heuristic NAT / firewall behavior
    discovery is tempting, but imperfect [RFC5780], leaving QUIC with
    sending occasional keepalives as the best assurance against mapping
    destruction (Section 8.10 of [I-D.tsvwg-quic-protocol]).
@@ -159,24 +188,16 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
    Experience with TCP is that state needs to be retained after
    processing the initial session shutdown packet, to avoid half-closed
    sessions on the TCP endpoints.  Although QUIC's termination mechanism
-   is simplier than TCP's, it is desirable to avoid causing half-closed
+   is simpler than TCP's, it is desirable to avoid causing half-closed
    sessions with QUIC.
-
-
-
-
-Wing & Hildebrand       Expires December 16, 2016               [Page 3]
-
-Internet-Draft     Network Path Requirements for QUIC          June 2016
-
 
       Recommendation: QUIC's public reset facility needs to describe
       timing recommendations for path state expiry.
 
-4.  Identification
+5.  Identification
 
    The externally-visible QUIC version number is useful for future
-   protocol agilty.  However, as this is visible to the path, it is
+   protocol agility.  However, as this is visible to the path, it is
    likely to ossify around that value.  Thus, having something else to
    identify QUIC is useful, so that the version number can change while
    retaining the same identification of a QUIC packet.
@@ -186,7 +207,7 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
 
       Recommendation: Have a path-invisible version number.
 
-5.  Spurious Packets
+6.  Spurious Packets
 
    A spurious packet may arrive when an endpoint (client or server):
 
@@ -197,6 +218,13 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
    o  acquires another host's prior IP address
 
    o  receives a malicious or accidental QUIC packet.
+
+
+
+Wing & Hildebrand       Expires December 16, 2016               [Page 4]
+
+Internet-Draft     Network Path Requirements for QUIC          June 2016
+
 
    In those cases, the host might have a QUIC application listening on
    that port, a non-QUIC application listening on that port, or no
@@ -218,19 +246,11 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
    expect to receive a QUIC packet.  Upon receiving a QUIC packet, the
    application will attempt to parse the packet.  If the application
    generates a response, it will not match the QUIC Connection ID of the
-
-
-
-Wing & Hildebrand       Expires December 16, 2016               [Page 4]
-
-Internet-Draft     Network Path Requirements for QUIC          June 2016
-
-
    sender, and will be dropped by the QUIC sender.  It is unknown if
    receiving unsolicited QUIC packets causes problems for commonly-
    deployed UDP applications.
 
-      Recommendation: Evalaute if receiving unsolicited QUIC packets
+      Recommendation: Evaluate if receiving unsolicited QUIC packets
       causes new problems for existing UDP clients or UDP servers.
 
    No application listening: If there is no process listening on that
@@ -246,7 +266,7 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
       Connection ID, in a fashion similar to TCP's handling of ICMP hard
       errors (Section 4 of [RFC5927]).
 
-6.  Path State Loss
+7.  Path State Loss
 
    If a firewall, NAT, or load balancer discards its mapping state
    without notifying the endpoint, both endpoints can take a long time
@@ -254,10 +274,18 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
    desirable to send a signal that the path state will be lost or has
    been lost.
 
+
+
+
+Wing & Hildebrand       Expires December 16, 2016               [Page 5]
+
+Internet-Draft     Network Path Requirements for QUIC          June 2016
+
+
       Recommendation: QUIC should provide a way for on-path middleboxes
       to signal that their mapping will be lost or has been lost.
 
-7.  Security Considerations
+8.  Security Considerations
 
    This document describes how QUIC needs to be distinguished from non-
    QUIC UDP traffic, so networks can defend themselves from attack and
@@ -273,22 +301,13 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
       randomized.  QUIC should be analyzed if it would similarly benefit
       from randomized initial sequence numbers.
 
-
-
-
-
-Wing & Hildebrand       Expires December 16, 2016               [Page 5]
-
-Internet-Draft     Network Path Requirements for QUIC          June 2016
-
-
-8.  IANA Considerations
+9.  IANA Considerations
 
    None.
 
-9.  References
+10.  References
 
-9.1.  Normative References
+10.1.  Normative References
 
    [I-D.tsvwg-quic-protocol]
               Hamilton, R., Iyengar, J., Swett, I., and A. Wilk, "QUIC:
@@ -296,11 +315,11 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
               draft-tsvwg-quic-protocol-02 (work in progress), January
               2016.
 
-   [RFC5927]  Gont, F., "ICMP Attacks against TCP", RFC 5927, DOI
-              10.17487/RFC5927, July 2010,
+   [RFC5927]  Gont, F., "ICMP Attacks against TCP", RFC 5927,
+              DOI 10.17487/RFC5927, July 2010,
               <http://www.rfc-editor.org/info/rfc5927>.
 
-9.2.  Informative References
+10.2.  Informative References
 
    [CORS]     W3C, "Cross-Origin Resource Sharing", January 2014,
               <https://www.w3.org/TR/cors>.
@@ -308,6 +327,16 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
    [homeCPE]  various, "An Experimental Study of Home Gateway
               Characteristics", November 2010,
               <http://conferences.sigcomm.org/imc/2010/papers/p260.pdf>.
+
+
+
+
+
+
+Wing & Hildebrand       Expires December 16, 2016               [Page 6]
+
+Internet-Draft     Network Path Requirements for QUIC          June 2016
+
 
    [I-D.byrne-opsec-udp-advisory]
               Byrne, C. and J. Kleberg, "Advisory Guidelines for UDP
@@ -328,19 +357,9 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
               UDP", BCP 127, RFC 4787, DOI 10.17487/RFC4787, January
               2007, <http://www.rfc-editor.org/info/rfc4787>.
 
-
-
-
-
-
-Wing & Hildebrand       Expires December 16, 2016               [Page 6]
-
-Internet-Draft     Network Path Requirements for QUIC          June 2016
-
-
    [RFC5780]  MacDonald, D. and B. Lowekamp, "NAT Behavior Discovery
-              Using Session Traversal Utilities for NAT (STUN)", RFC
-              5780, DOI 10.17487/RFC5780, May 2010,
+              Using Session Traversal Utilities for NAT (STUN)",
+              RFC 5780, DOI 10.17487/RFC5780, May 2010,
               <http://www.rfc-editor.org/info/rfc5780>.
 
    [RFC6824]  Ford, A., Raiciu, C., Handley, M., and O. Bonaventure,
@@ -369,6 +388,12 @@ Authors' Addresses
    Email: dwing@cisco.com
 
 
+
+Wing & Hildebrand       Expires December 16, 2016               [Page 7]
+
+Internet-Draft     Network Path Requirements for QUIC          June 2016
+
+
    Joe Hildebrand
    Cisco Systems, Inc.
 
@@ -389,4 +414,35 @@ Authors' Addresses
 
 
 
-Wing & Hildebrand       Expires December 16, 2016               [Page 7]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wing & Hildebrand       Expires December 16, 2016               [Page 8]
