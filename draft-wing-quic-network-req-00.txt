@@ -144,13 +144,11 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
    the job of off-path attackers more difficult.  If QUIC does not allow
    the path to associate packets with a consent at greater assurance
    than just matching the 5-tuple (relying on the endpoint software to
-   filter all attacks) a good amount of training will be required for
-   firewall administrators.  This training will have to change the long-
-   standing world view of a group that has traditionally been resistant
-   to change, delaying the deployment of QUIC.
+   filter all attacks) the network cannot filter attacks such as denials
+   of service.
 
-      Recommendation: QUIC should allow path elements to associate
-      packets after the consent to recieve with that consent, with more
+      Recommendation: QUIC should allow path elements to associate every
+      packet after the consent to recieve with that consent, with more
       assurance than the 5-tuple.
 
 4.  Long-lived Connections and HTTP Server Push
@@ -162,6 +160,8 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
    oriented TCP -- 4 minutes during connection establishment and 2 hours
    after connection establishment [homeCPE].
 
+   Such short timers are not a problem if the mapping is destroyed and
+   the client sends data first, as a new mapping will be created and
 
 
 
@@ -170,8 +170,6 @@ Wing & Hildebrand       Expires December 16, 2016               [Page 3]
 Internet-Draft     Network Path Requirements for QUIC          June 2016
 
 
-   Such short timers are not a problem if the mapping is destroyed and
-   the client sends data first, as a new mapping will be created and
    QUIC handles a new mapping (on a new UDP port or even on a new IP
    address) without an additional round-trip with its Connection Id.
    However, if the mapping is destroyed and the server sends data first,
@@ -218,6 +216,8 @@ Internet-Draft     Network Path Requirements for QUIC          June 2016
    o  acquires another host's prior IP address
 
    o  receives a malicious or accidental QUIC packet.
+
+
 
 
 

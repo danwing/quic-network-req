@@ -110,12 +110,10 @@ the sequence numbers on a given packet are used to provide hints to the path
 about this association, in an attempt make the job of off-path attackers more
 difficult.  If QUIC does not allow the path to associate packets with a
 consent at greater assurance than just matching the 5-tuple (relying on the
-endpoint software to filter all attacks) a good amount of training will be
-required for firewall administrators.  This training will have to change
-the long-standing world view of a group that has traditionally been resistant
-to change, delaying the deployment of QUIC.</t>
+endpoint software to filter all attacks) the network cannot filter attacks
+such as denials of service.</t>
 <t><list style="hanging">
-<t>Recommendation: QUIC should allow path elements to associate packets
+<t>Recommendation: QUIC should allow path elements to associate every packet
 after the consent to recieve with that consent, with more assurance than the
 5-tuple.</t>
 </list></t>

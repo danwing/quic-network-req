@@ -483,12 +483,12 @@
   <dd style="margin-left: 8">Recommendation: Provide path-visible consent request and consent acknowledgement for a given 5-tuple.</dd>
 </dl>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> Association with Existing Consent</h1>
-<p id="rfc.section.3.p.1">Once a consent to receive is established, multiple packets will usually be received in response to a single request.  In TCP, both the 5-tuple and the sequence numbers on a given packet are used to provide hints to the path about this association, in an attempt make the job of off-path attackers more difficult.  If QUIC does not allow the path to associate packets with a consent at greater assurance than just matching the 5-tuple (relying on the endpoint software to filter all attacks) a good amount of training will be required for firewall administrators.  This training will have to change the long-standing world view of a group that has traditionally been resistant to change, delaying the deployment of QUIC.</p>
+<p id="rfc.section.3.p.1">Once a consent to receive is established, multiple packets will usually be received in response to a single request.  In TCP, both the 5-tuple and the sequence numbers on a given packet are used to provide hints to the path about this association, in an attempt make the job of off-path attackers more difficult.  If QUIC does not allow the path to associate packets with a consent at greater assurance than just matching the 5-tuple (relying on the endpoint software to filter all attacks) the network cannot filter attacks such as denials of service.</p>
 <p/>
 
 <dl>
   <dt></dt>
-  <dd style="margin-left: 8">Recommendation: QUIC should allow path elements to associate packets after the consent to recieve with that consent, with more assurance than the 5-tuple.</dd>
+  <dd style="margin-left: 8">Recommendation: QUIC should allow path elements to associate every packet after the consent to recieve with that consent, with more assurance than the 5-tuple.</dd>
 </dl>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> Long-lived Connections and HTTP Server Push</h1>
 <p id="rfc.section.4.p.1">Although the recommended UDP timeout for arbitrary ports is two minutes (Section 4.3 of <a href="#RFC4787">[RFC4787]</a>), some residential CPE devices have a 30 second timeout and a majority have a three minute timeout (<a href="#homeCPE">[homeCPE]</a>, <a href="#tsvarea">[tsvarea]</a>).  Longer timeouts are provided to connection-oriented TCP -- 4 minutes during connection establishment and 2 hours after connection establishment <a href="#homeCPE">[homeCPE]</a>.</p>
